@@ -1,0 +1,15 @@
+version: '3.3'
+services:
+  keeweb:
+    image: antelle/keeweb
+    container_name: keeweb
+    volumes:
+      - $DATA_BASE_PATH/keeweb/keeweb.conf:/etc/nginx/conf.d/keeweb.conf
+      - $DATA_BASE_PATH/keeweb/config.json:/keeweb/config.json
+      #- ./keeweb.custom.conf:/etc/nginx/conf.d/keeweb.conf
+      #- ./config.json:/keeweb/config.json
+networks:
+  default:
+  shared:
+    external:
+      name: shared

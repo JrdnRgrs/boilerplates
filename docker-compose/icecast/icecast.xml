@@ -1,0 +1,77 @@
+<icecast>
+
+    <location>MY_LOCATIOn</location>
+    <admin>ADMIN_EMAIL</admin>
+
+
+    <limits>
+        <clients>100</clients>
+        <sources>2</sources>
+        <queue-size>524288</queue-size>
+        <client-timeout>30</client-timeout>
+        <header-timeout>15</header-timeout>
+        <source-timeout>10</source-timeout>
+
+        <burst-on-connect>1</burst-on-connect>
+
+        <burst-size>65535</burst-size>
+    </limits>
+
+    <authentication>
+        <!-- Sources log in with username 'source' -->
+        <source-password>hackme</source-password>
+        <!-- Relays log in with username 'relay' -->
+        <relay-password>hackme</relay-password>
+
+        <!-- Admin logs in with the username given below -->
+        <admin-user>icecast</admin-user>
+        <admin-password>hackme</admin-password>
+    </authentication>
+
+
+    <hostname>localhost</hostname>
+
+    <!-- You may have multiple <listen-socket> elements -->
+    <listen-socket>
+        <port>8000</port>
+    </listen-socket>
+
+    <http-headers>
+        <header name="Access-Control-Allow-Origin" value="*" />
+        <header name="X-Robots-Tag" value="noindex, noarchive" status="200" />
+    </http-headers>
+
+
+    <fileserve>1</fileserve>
+
+    <paths>
+        <!-- basedir is only used if chroot is enabled -->
+        <basedir>/usr/share/icecast</basedir>
+
+        <!-- Note that if <chroot> is turned on below, these paths must both
+             be relative to the new root, not the original root -->
+        <logdir>/var/log/icecast</logdir>
+        <webroot>/usr/share/icecast/web</webroot>
+        <adminroot>/usr/share/icecast/admin</adminroot>
+
+        <alias source="/" destination="/status.xsl"/>
+        <!-- The certificate file needs to contain both public and private part.
+             Both should be PEM encoded.
+        <ssl-certificate>/usr/share/icecast/icecast.pem</ssl-certificate>
+        -->
+    </paths>
+
+    <logging>
+        <accesslog>access.log</accesslog>
+        <errorlog>-</errorlog>
+        <!-- <playlistlog>playlist.log</playlistlog> -->
+        <loglevel>3</loglevel> <!-- 4 Debug, 3 Info, 2 Warn, 1 Error -->
+        <logsize>10000</logsize> <!-- Max size of a logfile -->
+
+    </logging>
+
+    <security>
+        <chroot>0</chroot>
+
+    </security>
+</icecast>

@@ -1,0 +1,64 @@
+version: "3.3"
+services:
+  app:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    environment:
+      - DB_MYSQL_HOST
+      - DB_MYSQL_PORT
+      - DB_MYSQL_USER
+      - DB_MYSQL_PASSWORD
+      - DB_MYSQL_NAME
+    volumes:
+      - $DATA_BASE_PATH/nginx-proxy-manager/config.json:/app/config/production.json
+      - $DATA_BASE_PATH/nginx-proxy-manager/data:/data
+      - $DATA_BASE_PATH/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - db
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    restart: unless-stopped
+    networks:
+      - nginx-proxy-manager
+      - shared
+  db:
+    image: linuxserver/mariadb:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - PUID
+      - PGID
+      - TZ
+    volumes:
+      - $DATA_BASE_PATH/nginx-proxy-manager/database:/config
+    networks:
+      - nginx-proxy-manager
+  stats:
+    image: justsky/goaccess-for-nginxproxymanager:latest
+    restart: unless-stopped
+    environment:
+      - PUID
+      - PGID
+      - TZ
+      - SKIP_ARCHIVED_LOGS
+      - BASIC_AUTH
+      - BASIC_AUTH_USERNAME
+      - BASIC_AUTH_PASSWORD
+    ports:
+      - 7880:7880
+    volumes:
+      - $DATA_BASE_PATH/nginx-proxy-manager/data/logs:/opt/log:ro
+    networks:
+      - nginx-proxy-manager
+      - shared
+networks:
+  nginx-proxy-manager:
+
+  shared:
+      external: true
+      name: shared

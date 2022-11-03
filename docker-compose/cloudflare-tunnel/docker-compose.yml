@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    environment:
+      - API_TOKEN
+    command:
+      - tunnel --no-autoupdate run --token $API_TOKEN
+
+

@@ -1,0 +1,19 @@
+version: '3.3'
+#---------------------------------------------------------------------#
+#                Homarr -  A homepage for your server.                #
+#---------------------------------------------------------------------#
+services:
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - $DATA_BASE_PATH/homarr/configs:/app/data/configs
+      - $DATA_BASE_PATH/homarr/icons:/app/public/icons
+    ports:
+      - 7575
+networks:
+  default:
+  shared:
+      external:
+        name: shared

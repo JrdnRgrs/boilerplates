@@ -1,10 +1,6 @@
 
 version: '3'
 
-volumes:
-  uptimekuma-data:
-    driver: local
-
 services:
   uptimekuma:
     image: louislam/uptime-kuma:latest
@@ -14,3 +10,12 @@ services:
     volumes:
       - uptimekuma-data:/app/data
     restart: unless-stopped
+
+volumes:
+  uptimekuma-data:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: shared

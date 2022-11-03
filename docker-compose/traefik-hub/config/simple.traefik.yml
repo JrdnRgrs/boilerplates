@@ -1,0 +1,20 @@
+## STATIC CONFIGURATION
+experimental:
+  hub: true
+
+api:
+  insecure: true
+  dashboard: true
+
+hub:
+  tls:
+    insecure: true
+
+metrics:
+  prometheus:
+    addRoutersLabels: true
+
+#providers:
+#  docker:
+#    endpoint: "unix:///var/run/docker.sock"
+#    exposedByDefault: false

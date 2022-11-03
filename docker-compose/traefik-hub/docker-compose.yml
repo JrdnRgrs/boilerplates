@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  # Start the agent with the latest version
+  hub-agent:
+    image: ghcr.io/traefik/hub-agent-traefik:v1.0.0
+    pull_policy: always
+    container_name: hub-agent
+    restart: "on-failure"
+    environment:
+      - HUB_TOKEN
+    command:
+      - run
+      - --hub.token=$HUB_TOKEN
+      - --auth-server.advertise-url=http://hub-agent
+      - --traefik.host=traefik
+      - --traefik.tls.insecure=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - traefik-hub
+      - shared
+    depends_on:
+      - traefik
+
+  # Start Traefik with the latest version
+  traefik:
+    image: traefik:v2.8
+    container_name: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      # (Optional) Expose Dashboard
+      - "8080:8080"  # Don't do this in production!
+    networks:
+      - traefik-hub
+      - shared
+    volumes:
+    #  - $DATA_BASE_PATH/traefik/data:/etc/traefik
+      - $DATA_BASE_PATH/traefik/traefik.yml:/traefik.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      # Enable Hub communication (open the port 9900 and 9901 by default)
+      - --experimental.hub=true
+      - --hub.tls.insecure=true
+      - --metrics.prometheus.addrouterslabels=true
+
+networks:
+  traefik-hub:
+  shared:
+    external:
+      name: shared

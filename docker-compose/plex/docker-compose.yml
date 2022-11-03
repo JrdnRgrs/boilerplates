@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+  plex:
+    image: greensheep/plex-server-docker-rpi:latest
+    container_name: plex
+    restart: always
+    network_mode: host
+    environment:
+      - SET_PLEX_UID
+      - SET_PLEX_GID
+    volumes:
+      - /media/Library/Videos:/videos
+      - $DATA_BASE_PATH/plex/config:/config
+      - $DATA_BASE_PATH/plex/data:/data
+      - $DATA_BASE_PATH/plex/transcode:/transcode
+    ports:
+      - 32400:32400

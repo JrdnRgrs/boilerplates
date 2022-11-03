@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  cloudflare-ddns:
+    image: oznu/cloudflare-ddns:latest
+    restart: unless-stopped
+    environment:
+      - API_KEY_FILE
+      - ZONE
+      - PROXIED
+    volumes:
+      - $DATA_BASE_PATH/cloudflare/credentials:/credentials/credentials

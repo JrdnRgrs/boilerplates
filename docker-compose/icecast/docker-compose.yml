@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  icecast:
+    container_name: icecast
+    image: $IMAGE_REPO
+    ports:
+      - 8001:8000
+    volumes:
+      - $DATA_BASE_PATH/icecast/icecast.xml:/etc/icecast.xml
+    restart: unless-stopped
+    environment:
+      - ICECAST_SOURCE_PASSWORD
+      - ICECAST_ADMIN_PASSWORD
+      - ICECAST_ADMIN_USERNAME
+
+networks:
+  default:
+    external:
+      name: shared

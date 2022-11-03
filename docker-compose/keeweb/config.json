@@ -1,0 +1,13 @@
+{
+    "settings": {
+        "gdrive": true,
+        "gdriveClientId": "",
+        "gdriveClientSecret": "",
+        "onedrive": true,
+        "onedriveClientId": "",
+        "onedriveClientSecret": "",
+        "onedriveTenantId": "",
+        "webdav": false,
+        "dropbox": false
+    }
+}

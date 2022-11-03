@@ -1,0 +1,96 @@
+version: "3.3"
+services:
+  cadvisor:
+    command:
+    - '--docker_only=true'
+    - '--housekeeping_interval=30s'
+    - '--disable_metrics=accelerator,cpu_topology,disk,memory_numa,tcp,udp,percpu,sched,process,hugetlb,referenced_memory,resctrl,cpuset,advtcp,memory_numa'
+    - '--store_container_labels=false'
+    - '--event_storage_event_limit=default=0'
+    - '--event_storage_age_limit=default=0'
+    container_name: monitoring-cadvisor
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    expose:
+      - 8080
+    hostname: rpi-cadvisor
+    image: zcube/cadvisor:latest
+    ipc: shareable
+    networks:
+      - rpimonitor_default
+    privileged: true
+    restart: unless-stopped
+    security_opt:
+      - label=disable
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      
+  grafana:
+    container_name: monitoring-grafana
+    environment:
+      - GF_PATHS_CONFIG
+      - GF_PATHS_DATA
+      - GF_PATHS_HOME
+      - GF_PATHS_LOGS
+      - GF_PATHS_PLUGINS
+      - GF_PATHS_PROVISIONING
+      - GF_USERS_ALLOW_SIGN_UP
+    hostname: rpi-grafana
+    image: grafana/grafana:latest
+    networks:
+      - rpimonitor_default
+      - shared
+    #ports:
+    #  - 4000:3000
+    restart: unless-stopped
+    user: root
+    volumes:
+      - $DATA_BASE_PATH/grafana/data:/var/lib/grafana
+      - $DATA_BASE_PATH/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - $DATA_BASE_PATH/grafana/provisioning:/etc/grafana/provisioning
+
+  node-exporter:
+    container_name: monitoring-node-exporter
+    expose:
+      - 9100
+    hostname: rpi-exporter
+    image: prom/node-exporter:latest
+    networks:
+      - rpimonitor_default
+    restart: unless-stopped
+
+  prometheus:
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+    container_name: monitoring-prometheus
+    expose:
+      - 9090
+    hostname: rpi-prom
+    image: prom/prometheus:latest
+    user: root
+    networks:
+      - rpimonitor_default
+    restart: unless-stopped
+    volumes:
+      # to be modified depending on your needs
+      - $DATA_BASE_PATH/prometheus/data:/prometheus
+      - $DATA_BASE_PATH/prometheus/config:/etc/prometheus/
+    environment:
+      - GF_SECURITY_ADMIN_USER
+      - GF_SECURITY_ADMIN_PASSWORD
+      - GF_USERS_ALLOW_SIGN_UP
+    links:
+      - cadvisor:cadvisor
+      - node-exporter:node-exporter
+
+networks:
+  rpimonitor_default:
+  shared:
+    external:
+      name: shared
