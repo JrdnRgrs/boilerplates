@@ -1,0 +1,15 @@
+name: Portainer Redeployments
+on:
+  push:
+    branches:
+      - 'main'
+      - 'ice'
+jobs:
+  Redeploy-Portainer-Stacks:
+    runs-on: ubuntu-latest
+    steps:
+    -
+      name: icecast
+      uses: jasongitmail/fast-webhook@v1
+      with:
+        url: ${{ secrets.ICECAST_WEBHOOK_URL }}
