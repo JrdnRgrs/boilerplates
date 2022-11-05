@@ -18,6 +18,7 @@ jobs:
       with:
         url: ${{ secrets.ICECAST_WEBHOOK_URL }}
         ignoreStatusCodes: '204'
+        preventFailureOnNoResponse: 'true'
     #-
     #  name: icecast
     #  uses: ./.github/actions/fast-webhook
