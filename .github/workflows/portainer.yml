@@ -9,6 +9,7 @@ jobs:
   Redeploy-Portainer-Stacks:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     -
       name: icecast
       uses: ./.github/actions/fast-webhook
