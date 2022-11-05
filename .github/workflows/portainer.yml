@@ -4,6 +4,7 @@ on:
     branches:
       - 'main'
       - 'ice'
+      - 'ice-test'
 jobs:
   Redeploy-Portainer-Stacks:
     runs-on: ubuntu-latest
