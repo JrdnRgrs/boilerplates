@@ -4,12 +4,14 @@ on:
     branches:
       - 'main'
       - 'ice'
+      - 'ice-test'
 jobs:
   Redeploy-Portainer-Stacks:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     -
       name: icecast
-      uses: jasongitmail/fast-webhook@v1
+      uses: ./.github/actions/fast-webhook
       with:
         url: ${{ secrets.ICECAST_WEBHOOK_URL }}
