@@ -11,6 +11,6 @@ jobs:
     steps:
     -
       name: icecast
-      uses: ./.github/fast-webhook
+      uses: .github/fast-webhook
       with:
         url: ${{ secrets.ICECAST_WEBHOOK_URL }}
