@@ -8,9 +8,10 @@ jobs:
   Redeploy-Portainer-Stacks:
     runs-on: ubuntu-latest
     steps:
-    - name: icecast Webhook
-      uses: fjogeleit/http-request-action@v1
-      with:
-        url: ${{ secrets.ICECAST_WEBHOOK_URL }}
-        ignoreStatusCodes: '204'
-        preventFailureOnNoResponse: 'true'
+    #- name: icecast Webhook
+    - uses: actions/checkout@v3
+    #  uses: fjogeleit/http-request-action@v1
+    #  with:
+    #    url: ${{ secrets.ICECAST_WEBHOOK_URL }}
+    #    ignoreStatusCodes: '204'
+    #    preventFailureOnNoResponse: 'true'
