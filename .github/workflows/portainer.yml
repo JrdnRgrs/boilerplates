@@ -3,24 +3,14 @@ on:
   push:
     branches:
       - 'main'
-      - 'ice'
 
 jobs:
   Redeploy-Portainer-Stacks:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      #with:
-      #  submodules: recursive
-    - name: Simple Webhook
-      id: icecast
+    - name: icecast Webhook
       uses: fjogeleit/http-request-action@v1
       with:
         url: ${{ secrets.ICECAST_WEBHOOK_URL }}
         ignoreStatusCodes: '204'
         preventFailureOnNoResponse: 'true'
-    #-
-    #  name: icecast
-    #  uses: ./.github/actions/fast-webhook
-    #  with:
-    #    url: ${{ secrets.ICECAST_WEBHOOK_URL }}
