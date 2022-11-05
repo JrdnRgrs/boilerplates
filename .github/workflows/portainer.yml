@@ -1,0 +1,16 @@
+name: Portainer Redeployments
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  Redeploy-Portainer-Stacks:
+    runs-on: ubuntu-latest
+    steps:
+    - name: icecast Webhook
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: ${{ secrets.ICECAST_WEBHOOK_URL }}
+        ignoreStatusCodes: '204'
+        preventFailureOnNoResponse: 'true'
