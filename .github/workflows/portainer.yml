@@ -10,10 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-        submodules: recursive
-    -
-      name: icecast
-      uses: ./.github/actions/fast-webhook
+      #with:
+      #  submodules: recursive
+    - name: Simple Webhook
+      id: icecast
+      uses: fjogeleit/http-request-action@v1
       with:
         url: ${{ secrets.ICECAST_WEBHOOK_URL }}
+        ignoreStatusCodes: '204'
+    #-
+    #  name: icecast
+    #  uses: ./.github/actions/fast-webhook
+    #  with:
+    #    url: ${{ secrets.ICECAST_WEBHOOK_URL }}
