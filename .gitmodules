@@ -1,0 +1,3 @@
+[submodule ".github/actions/fast-webhook"]
+	path = .github/actions/fast-webhook
+	url = https://github.com/JrdnRgrs/fast-webhook
